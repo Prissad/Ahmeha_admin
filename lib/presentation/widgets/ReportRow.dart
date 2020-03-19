@@ -1,26 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_reader/core/model/Article.dart';
-import 'package:news_reader/presentation/views/webview/NewsWebViewPage.dart';
+import 'package:news_reader/core/model/Report.dart';
 
 import 'package:timeago/timeago.dart';
 
-class ArticleRow extends StatelessWidget {
-  final Article article;
+class ReportRow extends StatelessWidget {
+  final Report report;
 
-  ArticleRow(this.article);
+  ReportRow(this.report);
 
   @override
   Widget build(BuildContext context) {
     String publishTime(var time) {
       try {
-        return timeAgo(DateTime.parse(article.publishedAt));
+        return timeAgo(DateTime.parse(report.time));
       } catch (Exception) {
         return "a day ago";
       }
     }
 
-    CircleAvatar articleImage(var url) {
+    CircleAvatar reportImage(var url) {
       try {
         return new CircleAvatar(
           backgroundImage: new NetworkImage(url),
@@ -32,11 +31,11 @@ class ArticleRow extends StatelessWidget {
       }
     }
 
-    final articleThumbnail = new Container(
+    final reportThumbnail = new Container(
       alignment: new FractionalOffset(0.0, 0.5),
       margin: const EdgeInsets.only(left: 16.0),
       child: Container(
-          child: articleImage(article.urlToImage),
+          child: reportImage(report.urlToImage),
           width: 100.0,
           height: 100.0,
           padding: const EdgeInsets.all(1.0),
@@ -47,7 +46,7 @@ class ArticleRow extends StatelessWidget {
           )),
     );
 
-    final articleCard = new Container(
+    final reportCard = new Container(
       margin: const EdgeInsets.only(left: 60.0, right: 16.0),
       decoration: new BoxDecoration(
         color: Colors.teal,
@@ -61,16 +60,18 @@ class ArticleRow extends StatelessWidget {
         ],
       ),
       child: new Container(
-        margin: const EdgeInsets.only(top: 8.0, left: 68.0,right: 4.0,bottom: 8.0),
+        margin: const EdgeInsets.only(
+            top: 8.0, left: 68.0, right: 4.0, bottom: 8.0),
         constraints: new BoxConstraints.expand(),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new Text(
-              article.title,
+              report.location,
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
-              style: TextStyle(color: Colors.white70,
+              style: TextStyle(
+                color: Colors.white70,
                 fontWeight: FontWeight.w800,
                 fontSize: 16.0,
               ),
@@ -82,13 +83,13 @@ class ArticleRow extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(vertical: 8.0)),
             new Row(
               children: <Widget>[
-                new Icon(Icons.access_time,
-                    size: 14.0, color: Colors.white70),
+                new Icon(Icons.access_time, size: 14.0, color: Colors.white70),
                 Padding(
                   padding: const EdgeInsets.only(left: 4.0),
-                  child: new Text(publishTime(article.publishedAt),style: TextStyle(
-                    color: Colors.black87
-                  ),),
+                  child: new Text(
+                    publishTime(report.time),
+                    style: TextStyle(color: Colors.black87),
+                  ),
                 ),
               ],
             )
@@ -102,30 +103,24 @@ class ArticleRow extends StatelessWidget {
       margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
       child: GestureDetector(
         onTap: () {
-          if (article.url.toString().isNotEmpty) {
-            //_navigateTo(context, article.url);
+          /*
+          if (report.url.toString().isNotEmpty) {
+            //_navigateTo(context, report.url);
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => NewsWebViewPage(article.url)),
+                  builder: (context) => NewsWebViewPage(report.url)),
             );
           }
+        */
         },
         child: Stack(
           children: <Widget>[
-            articleCard,
-            articleThumbnail,
+            reportCard,
+            reportThumbnail,
           ],
         ),
       ),
     );
   }
-
-//  _navigateTo(context, String url) {
-//    Routes.navigateTo(
-//        context,
-//        '/NewsWebViewPage/${url}',
-//        transition: TransitionType.fadeIn
-//    );
-//  }
 }

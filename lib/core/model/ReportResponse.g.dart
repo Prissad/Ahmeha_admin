@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ArticleResponse.dart';
+part of 'ReportResponse.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ArticleResponse _$ArticleResponseFromJson(Map<String, dynamic> json) {
-  return ArticleResponse(
+ReportResponse _$ReportResponseFromJson(Map<String, dynamic> json) {
+  return ReportResponse(
     json['status'] as String,
     json['totalResults'],
     (json['articles'] as List)
         ?.map((e) =>
-            e == null ? null : Article.fromJson(e as Map<String, dynamic>))
+            e == null ? null : Report.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$ArticleResponseToJson(ArticleResponse instance) =>
+Map<String, dynamic> _$ReportResponseToJson(ReportResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'totalResults': instance.totalResults,
