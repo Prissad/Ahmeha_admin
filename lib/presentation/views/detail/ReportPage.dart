@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:news_reader/core/model/Report.dart';
 import 'package:news_reader/presentation/widgets/ReportRow.dart';
 
@@ -72,10 +73,19 @@ class _ReportPageState extends State<ReportPage> {
     return Container(
         color: Colors.black87,
         child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: reports.length,
-          itemBuilder: (BuildContext context, int index) =>
-              ReportRow(reports[index]),
-        ));
+            scrollDirection: Axis.vertical,
+            itemCount: reports.length,
+            itemBuilder: (BuildContext context, int index) {
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 1500),
+                child: SlideAnimation(
+                  horizontalOffset: -1000.0,
+                  child: SlideAnimation(
+                    child: ReportRow(reports[index]),
+                  ),
+                ),
+              );
+            }));
   }
 }
