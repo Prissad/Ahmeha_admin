@@ -22,11 +22,35 @@ class _ReportPageState extends State<ReportPage> {
         20.5,
         "manzah",
         "resto",
-        "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-        "20:30",
+        "https://scontent.ftun7-1.fna.fbcdn.net/v/t1.15752-9/89925838_489363825280104_1717714553048924160_n.png?_nc_cat=110&_nc_sid=b96e70&_nc_ohc=FM15CjRP85UAX_hPoAX&_nc_ht=scontent.ftun7-1.fna&oh=7dd9d964fa2570859a74b85e04c6a11e&oe=5E9B7050",
+        "00:48:04.901462",
+        true));
+    reports.add(new Report(
+        100.3,
+        20.5,
+        "marsa",
+        "cafe",
+        "https://shamelesspopery.com/media/2014/01/Bebada2-247x450.jpg",
+        "01:30",
+        true));
+    reports.add(new Report(
+        100.3,
+        20.5,
+        "marsa",
+        "cafe",
+        "https://media-cdn.tripadvisor.com/media/photo-s/0a/ec/c5/ab/taken-with-cell-phone.jpg",
+        "01:30",
         true));
     reports.add(new Report(100.3, 20.5, "marsa", "cafe",
-        "https://tinypng.com/images/social/website.jpg", "01:30", true));
+        "https://i.redd.it/ku0gu5avkj911.jpg", "01:30", true));
+    reports.add(new Report(
+        100.3,
+        20.5,
+        "marsa",
+        "cafe",
+        "https://scontent.ftun7-1.fna.fbcdn.net/v/t1.15752-9/89714805_243938279979275_2983177111482662912_n.jpg?_nc_cat=110&_nc_sid=b96e70&_nc_ohc=1-Ny_hjFphsAX-7RuvX&_nc_ht=scontent.ftun7-1.fna&oh=10150086f59d5a8c31ac964a2ef4d51b&oe=5E9AF4B1",
+        "01:30",
+        true));
   }
 
   @override

@@ -31,6 +31,24 @@ class ReportRow extends StatelessWidget {
       }
     }
 
+    /*Scaffold reportImageFull(var url) {
+      try {
+        return new Scaffold(
+          body: new Image.network(
+            url,
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+        );
+      } catch (Exception) {
+        return Scaffold(
+          body: new Icon(Icons.photo),
+        );
+      }
+    }*/
+
     final reportThumbnail = new Container(
       alignment: new FractionalOffset(0.0, 0.5),
       margin: const EdgeInsets.only(left: 16.0),
@@ -103,16 +121,13 @@ class ReportRow extends StatelessWidget {
       margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
       child: GestureDetector(
         onTap: () {
-          /*
-          if (report.url.toString().isNotEmpty) {
-            //_navigateTo(context, report.url);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NewsWebViewPage(report.url)),
-            );
-          }
-        */
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                  elevation: 16, child: Image.network(report.urlToImage));
+            },
+          );
         },
         child: Stack(
           children: <Widget>[
