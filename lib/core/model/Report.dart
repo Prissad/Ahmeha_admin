@@ -12,8 +12,8 @@ class Report {
   String time;
   bool affichage;
 
-  Report(this.longitude, this.latitude, this.location, this.type,
-      this.urlToImage, this.time, this.affichage);
+  Report(this.longitude, this.latitude, this.type, this.urlToImage, this.time,
+      this.affichage);
 
   factory Report.fromJson(Map<String, dynamic> json) => _$ReportFromJson(json);
 

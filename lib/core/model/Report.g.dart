@@ -10,7 +10,6 @@ Report _$ReportFromJson(Map<String, dynamic> json) {
   return Report(
       json['longitude'] as double,
       json['latitude'] as double,
-      json['location'] as String,
       json['type'] as String,
       json['urlToImage'] as String,
       json['time'] as String,

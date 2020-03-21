@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_reader/core/data/geolocation/LookupCoordinate.dart';
 import 'package:news_reader/core/model/Report.dart';
 
 import 'package:timeago/timeago.dart';
@@ -30,24 +31,6 @@ class ReportRow extends StatelessWidget {
         );
       }
     }
-
-    /*Scaffold reportImageFull(var url) {
-      try {
-        return new Scaffold(
-          body: new Image.network(
-            url,
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-          ),
-        );
-      } catch (Exception) {
-        return Scaffold(
-          body: new Icon(Icons.photo),
-        );
-      }
-    }*/
 
     final reportThumbnail = new Container(
       alignment: new FractionalOffset(0.0, 0.5),
@@ -84,7 +67,7 @@ class ReportRow extends StatelessWidget {
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text(
+            /*new Text(
               report.location,
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
@@ -93,7 +76,8 @@ class ReportRow extends StatelessWidget {
                 fontWeight: FontWeight.w800,
                 fontSize: 16.0,
               ),
-            ),
+            ),*/
+            LookupCoordinate(report.latitude, report.longitude),
             new Container(
                 color: const Color(0xFF00C6FF),
                 width: 36.0,
