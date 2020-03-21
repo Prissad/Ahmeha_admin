@@ -31,13 +31,18 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
     if (placemarks != null && placemarks.isNotEmpty) {
       final Placemark pos = placemarks[0];
       setState(() {
-        _placemark = pos.administrativeArea +
-            ', ' +
-            pos.thoroughfare +
-            ', ' +
-            pos.locality +
-            ', ' +
-            pos.position.toString();
+        if (pos.administrativeArea != "") {
+          _placemark = pos.administrativeArea;
+        }
+        if (pos.thoroughfare != "") {
+          _placemark += ', ' + pos.thoroughfare;
+        }
+        if (pos.locality != "") {
+          _placemark += ', ' + pos.locality;
+        }
+        if (_placemark == "") {
+          _placemark = "L'emplacement n'a pas pu être détecté";
+        }
         /*_placemark = pos.name +
             ',' +
             pos.isoCountryCode +

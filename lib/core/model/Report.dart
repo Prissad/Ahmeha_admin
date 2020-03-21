@@ -4,6 +4,7 @@ part 'Report.g.dart';
 
 @JsonSerializable()
 class Report {
+  int id;
   double longitude;
   double latitude;
   String description;

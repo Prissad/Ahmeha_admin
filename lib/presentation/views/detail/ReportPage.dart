@@ -39,7 +39,7 @@ class _ReportPageState extends State<ReportPage> {
         "https://media-cdn.tripadvisor.com/media/photo-s/0a/ec/c5/ab/taken-with-cell-phone.jpg",
         "01:30",
         true));
-    reports.add(new Report(100.3, 20.5, "cafe",
+    reports.add(new Report(8.835415, 35.168926, "cafe",
         "https://i.redd.it/ku0gu5avkj911.jpg", "01:30", true));
     reports.add(new Report(
         10.422828,

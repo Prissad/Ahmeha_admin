@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:map/map.dart';
-import 'package:latlng/latlng.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,12 +6,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomePageState extends State<Home> {
-  final controller = MapController(
-    location: LatLng(
-      32.910221,
-      10.422828,
-    ),
-  );
   @override
   void initState() {
     super.initState();
@@ -51,7 +43,7 @@ class _HomePageState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            /*Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -59,17 +51,6 @@ class _HomePageState extends State<Home> {
                   'assets/images/home_image.png',
                   width: devicewidth,
                 ),
-              ],
-            ),*/
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: deviceheight * 0.8,
-                  width: devicewidth * 0.9,
-                  child: Map(controller: controller),
-                )
               ],
             ),
             Row(

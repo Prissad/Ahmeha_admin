@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:map/map.dart';
 import 'package:news_reader/core/data/geolocation/LookupCoordinate.dart';
 import 'package:news_reader/core/model/Report.dart';
+import 'package:latlng/latlng.dart';
 
 import 'package:timeago/timeago.dart';
 
@@ -12,6 +14,17 @@ class ReportRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = MapController(
+      location: LatLng(report.latitude, report.longitude),
+      zoom: 22,
+    );
+    void _incrementCounter() {
+      controller.location = LatLng(report.latitude, report.longitude);
+      controller.zoom = 22;
+    }
+
+    final devicewidth = MediaQuery.of(context).size.width;
+    final deviceheight = MediaQuery.of(context).size.height;
     String publishTime(var time) {
       try {
         return timeAgo(DateTime.parse(report.time));
@@ -55,16 +68,6 @@ class ReportRow extends StatelessWidget {
               },
             );
           }),
-      /*child: Container(
-          child: reportImage(report.urlToImage),
-          width: 100.0,
-          height: 100.0,
-          padding: const EdgeInsets.all(1.0),
-          // border width
-          decoration: new BoxDecoration(
-            color: Colors.white, // border color
-            shape: BoxShape.circle,
-          )),*/
     );
 
     final reportCard = new Container(
@@ -87,17 +90,8 @@ class ReportRow extends StatelessWidget {
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            /*new Text(
-              report.location,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-              style: TextStyle(
-                color: Colors.white70,
-                fontWeight: FontWeight.w800,
-                fontSize: 16.0,
-              ),
-            ),*/
             LookupCoordinate(report.latitude, report.longitude),
+            new Spacer(),
             new Container(
                 color: const Color(0xFF00C6FF),
                 width: 36.0,
@@ -113,6 +107,31 @@ class ReportRow extends StatelessWidget {
                     style: TextStyle(color: Colors.black87),
                   ),
                 ),
+                new Spacer(),
+                GestureDetector(
+                    child: Icon(Icons.location_on,
+                        size: 30.0, color: Colors.red[300]),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                              elevation: 16,
+                              child: Container(
+                                height: deviceheight,
+                                width: devicewidth,
+                                child: Scaffold(
+                                  body: Map(controller: controller),
+                                  floatingActionButton: FloatingActionButton(
+                                    onPressed: _incrementCounter,
+                                    tooltip: 'Location',
+                                    child: Icon(Icons.location_searching),
+                                  ),
+                                ),
+                              ));
+                        },
+                      );
+                    }),
               ],
             )
           ],
