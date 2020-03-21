@@ -35,7 +35,27 @@ class ReportRow extends StatelessWidget {
     final reportThumbnail = new Container(
       alignment: new FractionalOffset(0.0, 0.5),
       margin: const EdgeInsets.only(left: 16.0),
-      child: Container(
+      child: GestureDetector(
+          child: Container(
+              child: reportImage(report.urlToImage),
+              width: 100.0,
+              height: 100.0,
+              padding: const EdgeInsets.all(1.0),
+              // border width
+              decoration: new BoxDecoration(
+                color: Colors.white, // border color
+                shape: BoxShape.circle,
+              )),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                    elevation: 16, child: Image.network(report.urlToImage));
+              },
+            );
+          }),
+      /*child: Container(
           child: reportImage(report.urlToImage),
           width: 100.0,
           height: 100.0,
@@ -44,7 +64,7 @@ class ReportRow extends StatelessWidget {
           decoration: new BoxDecoration(
             color: Colors.white, // border color
             shape: BoxShape.circle,
-          )),
+          )),*/
     );
 
     final reportCard = new Container(
@@ -103,22 +123,11 @@ class ReportRow extends StatelessWidget {
     return Container(
       height: 120.0,
       margin: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-      child: GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                  elevation: 16, child: Image.network(report.urlToImage));
-            },
-          );
-        },
-        child: Stack(
-          children: <Widget>[
-            reportCard,
-            reportThumbnail,
-          ],
-        ),
+      child: Stack(
+        children: <Widget>[
+          reportCard,
+          reportThumbnail,
+        ],
       ),
     );
   }

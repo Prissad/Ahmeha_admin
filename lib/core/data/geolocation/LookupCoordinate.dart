@@ -31,7 +31,13 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
     if (placemarks != null && placemarks.isNotEmpty) {
       final Placemark pos = placemarks[0];
       setState(() {
-        _placemark = pos.thoroughfare + ', ' + pos.locality;
+        _placemark = pos.administrativeArea +
+            ', ' +
+            pos.thoroughfare +
+            ', ' +
+            pos.locality +
+            ', ' +
+            pos.position.toString();
         /*_placemark = pos.name +
             ',' +
             pos.isoCountryCode +

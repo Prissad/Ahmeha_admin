@@ -26,8 +26,8 @@ class _ReportPageState extends State<ReportPage> {
         "00:48:04.901462",
         true));
     reports.add(new Report(
-        100.3,
-        20.5,
+        10.340294,
+        36.729070,
         "cafe",
         "https://shamelesspopery.com/media/2014/01/Bebada2-247x450.jpg",
         "01:30",

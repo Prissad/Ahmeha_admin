@@ -6,7 +6,7 @@ part 'Report.g.dart';
 class Report {
   double longitude;
   double latitude;
-  String location;
+  String description;
   String type;
   String urlToImage;
   String time;
