@@ -90,7 +90,29 @@ class ReportRow extends StatelessWidget {
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            LookupCoordinate(report.latitude, report.longitude),
+            Row(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Container(
+                      width: devicewidth * 0.5,
+                      child:
+                          LookupCoordinate(report.latitude, report.longitude),
+                    )
+                  ],
+                ),
+                new Spacer(),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: new Icon(Icons.clear,
+                          size: 20.0, color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ],
+            ),
             new Spacer(),
             new Container(
                 color: const Color(0xFF00C6FF),

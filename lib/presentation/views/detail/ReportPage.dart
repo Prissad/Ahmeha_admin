@@ -10,11 +10,23 @@ class ReportPage extends StatefulWidget {
 
 class _ReportPageState extends State<ReportPage> {
   List<Report> reports;
+  List<Report> reportsTrue;
+  List<Report> reportsFalse;
   @override
   void initState() {
     super.initState();
     reports = new List<Report>();
+    reportsTrue = new List<Report>();
+    reportsFalse = new List<Report>();
     addReports();
+    for (var i = 0; i < reports.length; i++) {
+      final Report report = reports[i];
+      if (report.affichage == true) {
+        reportsTrue.add(report);
+      } else {
+        reportsFalse.add(report);
+      }
+    }
   }
 
   void addReports() {
@@ -38,7 +50,7 @@ class _ReportPageState extends State<ReportPage> {
         "cafe",
         "https://media-cdn.tripadvisor.com/media/photo-s/0a/ec/c5/ab/taken-with-cell-phone.jpg",
         "01:30",
-        true));
+        false));
     reports.add(new Report(8.835415, 35.168926, "cafe",
         "https://i.redd.it/ku0gu5avkj911.jpg", "01:30", true));
     reports.add(new Report(
@@ -70,7 +82,7 @@ class _ReportPageState extends State<ReportPage> {
         color: Colors.black87,
         child: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: reports.length,
+            itemCount: reportsTrue.length,
             itemBuilder: (BuildContext context, int index) {
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -78,7 +90,7 @@ class _ReportPageState extends State<ReportPage> {
                 child: SlideAnimation(
                   horizontalOffset: -1000.0,
                   child: SlideAnimation(
-                    child: ReportRow(reports[index]),
+                    child: ReportRow(reportsTrue[index]),
                   ),
                 ),
               );
