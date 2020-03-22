@@ -50,9 +50,23 @@ class _ReportPageState extends State<ReportPage> {
         "cafe",
         "https://media-cdn.tripadvisor.com/media/photo-s/0a/ec/c5/ab/taken-with-cell-phone.jpg",
         "01:30",
-        false));
+        true));
     reports.add(new Report(8.835415, 35.168926, "cafe",
         "https://i.redd.it/ku0gu5avkj911.jpg", "01:30", true));
+    reports.add(new Report(
+        10.422828,
+        32.910221,
+        "cafe",
+        "https://scontent.ftun7-1.fna.fbcdn.net/v/t1.15752-9/89714805_243938279979275_2983177111482662912_n.jpg?_nc_cat=110&_nc_sid=b96e70&_nc_ohc=1-Ny_hjFphsAX-7RuvX&_nc_ht=scontent.ftun7-1.fna&oh=10150086f59d5a8c31ac964a2ef4d51b&oe=5E9AF4B1",
+        "01:30",
+        true));
+    reports.add(new Report(
+        10.422828,
+        32.910221,
+        "cafe",
+        "https://scontent.ftun7-1.fna.fbcdn.net/v/t1.15752-9/89714805_243938279979275_2983177111482662912_n.jpg?_nc_cat=110&_nc_sid=b96e70&_nc_ohc=1-Ny_hjFphsAX-7RuvX&_nc_ht=scontent.ftun7-1.fna&oh=10150086f59d5a8c31ac964a2ef4d51b&oe=5E9AF4B1",
+        "01:30",
+        true));
     reports.add(new Report(
         10.422828,
         32.910221,
@@ -71,7 +85,7 @@ class _ReportPageState extends State<ReportPage> {
           'Reports',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: Color(0xFF75DAAD),
       ),
       body: makeBody(context),
     ));
@@ -79,21 +93,39 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget makeBody(BuildContext context) {
     return Container(
-        color: Colors.black87,
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: reportsTrue.length,
-            itemBuilder: (BuildContext context, int index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 1500),
-                child: SlideAnimation(
-                  horizontalOffset: -1000.0,
-                  child: SlideAnimation(
-                    child: ReportRow(reportsTrue[index]),
-                  ),
-                ),
-              );
-            }));
+        color: /*Color(0xFF7A4D1D)*/ Colors.black87,
+        child: AnimationLimiter(
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: reportsTrue.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = reportsTrue[index];
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 1500),
+                    child: SlideAnimation(
+                      horizontalOffset: -1000.0,
+                      //  child: SlideAnimation(
+                      child: Dismissible(
+                        // Show a red background as the item is swiped away.
+                        background: Container(
+                          color: Colors.red,
+                        ),
+                        key: UniqueKey(),
+                        onDismissed: (direction) {
+                          setState(() {
+                            reportsFalse.add(item);
+                            reportsTrue.removeAt(index);
+                          });
+
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text("Elément masqué avec succès")));
+                        },
+                        child: ReportRow(item),
+                      ),
+                      // ),
+                    ),
+                  );
+                })));
   }
 }

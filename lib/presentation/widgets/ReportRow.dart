@@ -59,6 +59,7 @@ class ReportRow extends StatelessWidget {
                 color: Colors.white, // border color
                 shape: BoxShape.circle,
               )),
+          //   onTapDown: ,
           onTap: () {
             showDialog(
               context: context,
@@ -101,7 +102,7 @@ class ReportRow extends StatelessWidget {
                     )
                   ],
                 ),
-                new Spacer(),
+                /*new Spacer(),
                 Column(
                   children: <Widget>[
                     Container(
@@ -110,7 +111,7 @@ class ReportRow extends StatelessWidget {
                           size: 20.0, color: Colors.white70),
                     ),
                   ],
-                ),
+                ),*/
               ],
             ),
             new Spacer(),
