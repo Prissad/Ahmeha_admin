@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:news_reader/core/api/api.dart';
 import 'package:news_reader/core/model/Report.dart';
 import 'package:news_reader/presentation/result/results.dart';
+import 'package:news_reader/presentation/search/ShowSearch.dart';
 import 'package:news_reader/presentation/search/search.dart';
 
 class DataSearch extends SearchDelegate<String> {
@@ -63,40 +66,12 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     search.setItem(this.query);
-    var _controller = ScrollController();
-    List<Report> results;
-    int page = 2;
-    _controller.addListener(() {
-      if (_controller.position.atEdge) {
-        if (_controller.position.pixels != 0) {
-          results += search.getResults(page).then(() {});
-          page++;
-        }
-      }
-    });
     // show some result based on the selection
-
-    results = search.getResults(1).then(() {});
     return Card(
-        color: Colors.grey,
-        shape: RoundedRectangleBorder(),
-        child: Center(
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                controller: _controller,
-                itemCount: results.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final item = results[index];
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 1500),
-                    child: SlideAnimation(
-                      horizontalOffset: -1000.0,
-                      //  child: SlideAnimation(
-                      child: ResultRow(item),
-                    ),
-                  );
-                })));
+      color: Colors.grey,
+      shape: RoundedRectangleBorder(),
+      child: ShowSearch(search),
+    );
     // return(Text(query));
   }
 

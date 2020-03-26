@@ -20,6 +20,12 @@ class CallApi {
         .get(Uri.encodeFull(fullUrl), queryParameters: {"page": page});
   }
 
+  getDataAll(apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    dio = new Dio();
+    return await dio.get(Uri.encodeFull(fullUrl));
+  }
+
   putData(data, apiUrl) async {
     var fullUrl = _url + apiUrl;
     setHeaders();

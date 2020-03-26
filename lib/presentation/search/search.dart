@@ -17,22 +17,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Search {
   String itemtoSearch;
-  List<Report> results = new List<Report>();
 
   Search({this.itemtoSearch});
   void setItem(String item) {
     this.itemtoSearch = item;
-  }
-
-  getResults(page) async {
-    //requests to get the results
-    Response res =
-        await CallApi().getData(page, "/search?search=" + this.itemtoSearch);
-    final Map<String, dynamic> parsed = res.data;
-
-    results =
-        parsed['posts']['data'].map<Report>((k) => Report.fromJson(k)).toList();
-
-    return (results);
   }
 }
