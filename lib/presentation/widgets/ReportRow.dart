@@ -142,7 +142,7 @@ class ReportRow extends StatelessWidget {
                     child: Text(
                       report.description,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      maxLines: 1,
                       style: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.w400,
@@ -266,7 +266,7 @@ class ReportRow extends StatelessWidget {
                                         report.description,
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 10,
+                                    maxLines: 30,
                                     style: TextStyle(
                                       color: Colors.white70,
                                       fontWeight: FontWeight.w400,

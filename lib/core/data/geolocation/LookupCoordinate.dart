@@ -91,7 +91,7 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
     return new Text(
       _placemark,
       overflow: TextOverflow.ellipsis,
-      maxLines: 1,
+      maxLines: 2,
       style: TextStyle(
         color: Colors.white70,
         fontWeight: FontWeight.w800,

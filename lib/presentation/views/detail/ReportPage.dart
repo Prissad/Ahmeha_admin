@@ -211,6 +211,15 @@ class _ReportPageState extends State<ReportPage> {
               }),
           new ListTile(
               leading: Icon(Icons.date_range),
+              title: new Text("Trier par type"),
+              onTap: () {
+                setState(() {
+                  reportsTrue.sort((a, b) => b.type.compareTo(a.type));
+                  reportsFalse.sort((a, b) => b.type.compareTo(a.type));
+                });
+              }),
+          new ListTile(
+              leading: Icon(Icons.date_range),
               title: new Text("Choisir le gouvernorat"),
               onTap: () {
                 showDialog(
@@ -715,6 +724,7 @@ class _ReportPageState extends State<ReportPage> {
                         key: UniqueKey(),
                         onDismissed: (direction) {
                           if (this.mounted) {
+                            _putAffichage(item);
                             setState(() {
                               reportsTrue.add(item);
                               reportsFalse.removeAt(index);
@@ -750,6 +760,7 @@ class _ReportPageState extends State<ReportPage> {
                         key: UniqueKey(),
                         onDismissed: (direction) {
                           if (this.mounted) {
+                            _putAffichage(item);
                             setState(() {
                               reportsFalse.add(item);
                               reportsTrue.removeAt(index);
@@ -766,5 +777,15 @@ class _ReportPageState extends State<ReportPage> {
                 }),
       ),
     );
+  }
+
+  void _putAffichage(item) async {
+    Map<String, dynamic> data = new Map<String, dynamic>();
+    data = {'id': item.id, 'affichage': item.affichage};
+    try {
+      await CallApi().putData(data, "/edit");
+    } catch (e, stacktrace) {
+      print(stacktrace);
+    }
   }
 }

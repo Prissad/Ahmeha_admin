@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_reader/core/api/api.dart';
 import 'package:news_reader/core/model/Report.dart';
@@ -18,14 +19,20 @@ class Search {
   String itemtoSearch;
   List<Report> results = new List<Report>();
 
-    Search({this.itemtoSearch});
-     void setItem(String item){
-this.itemtoSearch=item;
-     }
+  Search({this.itemtoSearch});
+  void setItem(String item) {
+    this.itemtoSearch = item;
+  }
 
-     List<Report> getResults(){
+  getResults(page) async {
     //requests to get the results
-       return(results);
-     }
-  
+    Response res =
+        await CallApi().getData(page, "/search?search=" + this.itemtoSearch);
+    final Map<String, dynamic> parsed = res.data;
+
+    results =
+        parsed['posts']['data'].map<Report>((k) => Report.fromJson(k)).toList();
+
+    return (results);
+  }
 }

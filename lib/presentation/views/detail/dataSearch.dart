@@ -31,17 +31,10 @@ class DataSearch extends SearchDelegate<String> {
     "Tunis",
     "Zaghouan",
   ];
-  final recentCities = [
-    "Sfax",
-    "Sidi Bouzid",
-    "Siliana",
-    "Sousse",
-    "Tataouine",
-    "Tozeur",
-  ];
+  final recentCities = [];
 
   Search search = new Search();
-  
+
   @override
   List<Widget> buildActions(BuildContext context) {
     //actions for appbar
@@ -69,30 +62,41 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    search.setItem(this.query);
+    var _controller = ScrollController();
+    List<Report> results;
+    int page = 2;
+    _controller.addListener(() {
+      if (_controller.position.atEdge) {
+        if (_controller.position.pixels != 0) {
+          results += search.getResults(page).then(() {});
+          page++;
+        }
+      }
+    });
     // show some result based on the selection
-search.setItem(this.query);
-List<Report> results=search.getResults();
+
+    results = search.getResults(1).then(() {});
     return Card(
         color: Colors.grey,
         shape: RoundedRectangleBorder(),
         child: Center(
-          child: ListView.builder(
+            child: ListView.builder(
                 scrollDirection: Axis.vertical,
+                controller: _controller,
                 itemCount: results.length,
-                itemBuilder:(BuildContext context, int index) {
-                   final item = results[index];
+                itemBuilder: (BuildContext context, int index) {
+                  final item = results[index];
                   return AnimationConfiguration.staggeredList(
                     position: index,
                     duration: const Duration(milliseconds: 1500),
                     child: SlideAnimation(
                       horizontalOffset: -1000.0,
                       //  child: SlideAnimation(
-                      child:  ResultRow(item),                    
+                      child: ResultRow(item),
                     ),
                   );
-                })
-
-        ));
+                })));
     // return(Text(query));
   }
 
@@ -104,7 +108,6 @@ List<Report> results=search.getResults();
         : gouvernoratsName
             .where((p) => p.toUpperCase().startsWith(query.toUpperCase()))
             .toList();
-          
 
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
@@ -127,9 +130,4 @@ List<Report> results=search.getResults();
       itemCount: suggestionList.length,
     );
   }
-
-
- 
-      
-  
 }

@@ -20,6 +20,12 @@ class CallApi {
         .get(Uri.encodeFull(fullUrl), queryParameters: {"page": page});
   }
 
+  putData(data, apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    setHeaders();
+    return await dio.put(Uri.encodeFull(fullUrl), data: json.encode(data));
+  }
+
   setHeaders() {
     dio = new Dio();
     dio.options.headers['content-Type'] = 'application/json';
