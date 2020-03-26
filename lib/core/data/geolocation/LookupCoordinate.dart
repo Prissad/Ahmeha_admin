@@ -30,20 +30,21 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
 
     if (placemarks != null && placemarks.isNotEmpty) {
       final Placemark pos = placemarks[0];
-      setState(() {
-        if (pos.administrativeArea != "") {
-          _placemark = pos.administrativeArea;
-        }
-        if (pos.thoroughfare != "") {
-          _placemark += ', ' + pos.thoroughfare;
-        }
-        if (pos.locality != "") {
-          _placemark += ', ' + pos.locality;
-        }
-        if (_placemark == "") {
-          _placemark = "L'emplacement n'a pas pu être détecté";
-        }
-        /*_placemark = pos.name +
+      if (this.mounted) {
+        setState(() {
+          if (pos.administrativeArea != "") {
+            _placemark = pos.administrativeArea;
+          }
+          if (pos.thoroughfare != "") {
+            _placemark += ', ' + pos.thoroughfare;
+          }
+          if (pos.locality != "") {
+            _placemark += ', ' + pos.locality;
+          }
+          if (_placemark == "") {
+            _placemark = "L'emplacement n'a pas pu être détecté";
+          }
+          /*_placemark = pos.name +
             ',' +
             pos.isoCountryCode +
             ',' +
@@ -64,7 +65,8 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
             pos.subThoroughfare +
             ',' +
             pos.position.toString();*/
-      });
+        });
+      }
     }
   }
 
@@ -89,7 +91,7 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
     return new Text(
       _placemark,
       overflow: TextOverflow.ellipsis,
-      maxLines: 3,
+      maxLines: 1,
       style: TextStyle(
         color: Colors.white70,
         fontWeight: FontWeight.w800,

@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:news_reader/core/api/api.dart';
-import 'package:news_reader/presentation/views/Identification/LogIn.dart';
+import 'package:news_reader/presentation/views/detail/ReportPage.dart';
 import 'package:news_reader/presentation/views/home/Home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 // import 'package:tutorial_project/Home/homeScreen.dart';
 // import 'package:tutorial_project/Login/loginScreen.dart';
@@ -22,11 +23,18 @@ class _SignUpState extends State<SignUp> {
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-
+  String cin;
+  String nom;
+  String email;
+  String mdp;
+  String numb;
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Container(
         child: Stack(
@@ -48,10 +56,12 @@ class _SignUpState extends State<SignUp> {
             ),
 
             Positioned(
+              // top:deviceHeight*0.1,
+              // right: deviceWidth*0.005,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Card(
                       elevation: 4.0,
@@ -65,11 +75,23 @@ class _SignUpState extends State<SignUp> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             /////////////// ID////////////
-                            TextField(
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               controller: idController,
                               cursorColor: Color(0xFF9b9b9b),
                               keyboardType: TextInputType.number,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  cin = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.card_membership,
@@ -83,11 +105,23 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             /////////Name////////
-                            TextField(
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               controller: nameController,
                               cursorColor: Color(0xFF9b9b9b),
                               keyboardType: TextInputType.text,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  nom = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.account_circle,
@@ -102,11 +136,23 @@ class _SignUpState extends State<SignUp> {
                             ),
 
                             /////////////// Email ////////////
-                            TextField(
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               controller: mailController,
                               cursorColor: Color(0xFF9b9b9b),
                               keyboardType: TextInputType.emailAddress,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  email = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.mail,
@@ -121,12 +167,24 @@ class _SignUpState extends State<SignUp> {
                             ),
 
                             /////////////// password ////////////
-                            TextField(
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               cursorColor: Color(0xFF9b9b9b),
                               controller: passwordController,
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: true,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  mdp = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.vpn_key,
@@ -139,11 +197,24 @@ class _SignUpState extends State<SignUp> {
                                     fontWeight: FontWeight.normal),
                               ),
                             ),
-                            TextField(
+                            ///////Numero de telephone/////
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               controller: phoneController,
                               cursorColor: Color(0xFF9b9b9b),
                               keyboardType: TextInputType.phone,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  numb = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.mobile_screen_share,
@@ -182,7 +253,125 @@ class _SignUpState extends State<SignUp> {
                                   shape: new RoundedRectangleBorder(
                                       borderRadius:
                                           new BorderRadius.circular(20.0)),
-                                  onPressed: _isLoading ? null : _handleLogin),
+                                  onPressed: () {
+                                    if (!_isLoading) {
+                                      if (cin == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title: "Le CIN est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else if (nom == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title: "Le nom est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else if (email == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title: "L'email est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else if (mdp == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title:
+                                              "Le mot de passe est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else if (numb == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title:
+                                              "Le numéro de téléphone est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else {
+                                        // Future.delayed(
+                                        //   const Duration(milliseconds: 500), () {
+                                        _handleLogin();
+                                        // }
+                                        // );
+                                      }
+                                      ;
+                                    }
+                                  }),
                             ),
                           ],
                         ),
@@ -190,28 +379,28 @@ class _SignUpState extends State<SignUp> {
                     ),
 
                     /////////////// already have an account ////////////
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => LogIn()));
-                        },
-                        child: Text(
-                          'Avez-vous deja un compte?',
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 20),
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           new MaterialPageRoute(
+                    //               builder: (context) => LogIn()));
+                    //     },
+                    //     child: Text(
+                    //       'Avez-vous deja un compte?',
+                    //       textDirection: TextDirection.ltr,
+                    //       style: TextStyle(
+                    //         fontStyle: FontStyle.italic,
+                    //         color: Colors.white,
+                    //         fontSize: 15.0,
+                    //         decoration: TextDecoration.none,
+                    //         fontWeight: FontWeight.normal,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -245,7 +434,7 @@ class _SignUpState extends State<SignUp> {
       localStorage.setString('user', json.encode(body['user']));*/
 
     Navigator.push(
-        context, new MaterialPageRoute(builder: (context) => Home()));
+        context, new MaterialPageRoute(builder: (context) => ReportPage()));
     //}
 
     setState(() {

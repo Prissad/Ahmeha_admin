@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:news_reader/presentation/views/Inscription/SignUp.dart';
+import 'package:news_reader/core/api/api.dart';
+import 'package:news_reader/presentation/views/detail/ReportPage.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 // import 'package:tutorial_project/Home/homeScreen.dart';
 // import 'package:tutorial_project/SignUp/signUpScreen.dart';
 // import 'package:tutorial_project/api/api.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
+  static String connectedEmail = "";
   @override
   _LogInState createState() => _LogInState();
 }
@@ -16,6 +22,8 @@ class _LogInState extends State<LogIn> {
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   ScaffoldState scaffoldState;
+  String email;
+  String mdp;
   _showMsg(msg) {
     //
     final snackBar = SnackBar(
@@ -70,11 +78,23 @@ class _LogInState extends State<LogIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             /////////////  Email//////////////
-                            TextField(
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               controller: mailController,
                               cursorColor: Color(0xFF9b9b9b),
                               keyboardType: TextInputType.text,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null;
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  email = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.account_circle,
@@ -89,12 +109,24 @@ class _LogInState extends State<LogIn> {
                             ),
 
                             /////////////// password////////////////////
-                            TextField(
+                            TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               cursorColor: Color(0xFF9b9b9b),
                               controller: passwordController,
                               keyboardType: TextInputType.text,
                               obscureText: true,
+                              autovalidate: true,
+                              validator: (String value) {
+                                if (value.length == 0) {
+                                  return 'Ce champs est obligatoire';
+                                }
+                                return null; //aleh!
+                              },
+                              onChanged: (String value) {
+                                setState(() {
+                                  mdp = value;
+                                });
+                              },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.vpn_key,
@@ -132,7 +164,56 @@ class _LogInState extends State<LogIn> {
                                   shape: new RoundedRectangleBorder(
                                       borderRadius:
                                           new BorderRadius.circular(20.0)),
-                                  onPressed: _isLoading ? null : _login),
+                                  onPressed: () {
+                                    if (!_isLoading) {
+                                      if (email == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title: "L'email est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else if (mdp == null) {
+                                        Alert(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title:
+                                              "Le mot de passe est obligatoire",
+                                          desc: "Merci de remplir le champ",
+                                          buttons: [
+                                            DialogButton(
+                                                child: Text("Fermer"),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(
+                                                          116, 116, 191, 1.0),
+                                                      Color.fromRGBO(
+                                                          52, 138, 199, 1.0)
+                                                    ])),
+                                          ],
+                                        ).show();
+                                      } else {
+                                        _login();
+                                      }
+                                    }
+                                  }),
                             ),
                           ],
                         ),
@@ -140,27 +221,27 @@ class _LogInState extends State<LogIn> {
                     ),
 
                     ////////////   new account///////////////
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => SignUp()));
-                        },
-                        child: Text(
-                          'Créer un nouveau compte',
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 20),
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           new MaterialPageRoute(
+                    //               builder: (context) => SignUp()));
+                    //     },
+                    //     child: Text(
+                    //       'Créer un nouveau compte',
+                    //       textDirection: TextDirection.ltr,
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 15.0,
+                    //         decoration: TextDecoration.none,
+                    //         fontWeight: FontWeight.normal,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -176,12 +257,34 @@ class _LogInState extends State<LogIn> {
       _isLoading = true;
     });
 
-    var data = {
-      'email': mailController.text,
-      'password': passwordController.text
-    };
+    Map<String, dynamic> data = new Map<String, dynamic>();
+    data = {'email': mailController.text, 'password': passwordController.text};
 
-    // var res = await CallApi().postData(data, 'login');
+    try {
+      var res = await CallApi().postData(data, "/login");
+      LogIn.connectedEmail = data['email'];
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => ReportPage()));
+    } catch (e, stacktrace) {
+      print(stacktrace);
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Email ou mot de passe incorrect",
+        desc: "Veuillez réessayer !",
+        buttons: [
+          DialogButton(
+              child: Text("Fermer"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              gradient: LinearGradient(colors: [
+                Color.fromRGBO(116, 116, 191, 1.0),
+                Color.fromRGBO(52, 138, 199, 1.0)
+              ])),
+        ],
+      ).show();
+    }
     // var body = json.decode(res.body);
     // if(body['success']){
     //   SharedPreferences localStorage = await SharedPreferences.getInstance();

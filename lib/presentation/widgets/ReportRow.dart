@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:map/map.dart';
@@ -33,7 +35,7 @@ class ReportRow extends StatelessWidget {
       }
     }
 
-    CircleAvatar reportImage(var url) {
+    CircleAvatar reportImage(url) {
       try {
         return new CircleAvatar(
           backgroundImage: new NetworkImage(url),
@@ -59,7 +61,6 @@ class ReportRow extends StatelessWidget {
                 color: Colors.white, // border color
                 shape: BoxShape.circle,
               )),
-          //   onTapDown: ,
           onTap: () {
             showDialog(
               context: context,
@@ -71,95 +72,217 @@ class ReportRow extends StatelessWidget {
           }),
     );
 
-    final reportCard = new Container(
-      margin: const EdgeInsets.only(left: 60.0, right: 16.0),
-      decoration: new BoxDecoration(
-        color: Colors.teal,
-        shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.circular(6.0),
-        boxShadow: <BoxShadow>[
-          new BoxShadow(
-              color: Colors.black,
-              blurRadius: 10.0,
-              offset: new Offset(0.0, 10.0))
-        ],
-      ),
-      child: new Container(
-        margin: const EdgeInsets.only(
-            top: 8.0, left: 68.0, right: 4.0, bottom: 8.0),
-        constraints: new BoxConstraints.expand(),
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Container(
-                      width: devicewidth * 0.5,
-                      child:
-                          LookupCoordinate(report.latitude, report.longitude),
-                    )
-                  ],
-                ),
-                /*new Spacer(),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: new Icon(Icons.clear,
-                          size: 20.0, color: Colors.white70),
-                    ),
-                  ],
-                ),*/
-              ],
-            ),
-            new Spacer(),
-            new Container(
-                color: const Color(0xFF00C6FF),
-                width: 36.0,
-                height: 1.0,
-                margin: const EdgeInsets.symmetric(vertical: 8.0)),
-            new Row(
-              children: <Widget>[
-                new Icon(Icons.access_time, size: 14.0, color: Colors.white70),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4.0),
-                  child: new Text(
-                    publishTime(report.time),
-                    style: TextStyle(color: Colors.black87),
-                  ),
-                ),
-                new Spacer(),
-                GestureDetector(
-                    child: Icon(Icons.location_on,
-                        size: 30.0, color: Colors.red[300]),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                              elevation: 16,
-                              child: Container(
-                                height: deviceheight,
-                                width: devicewidth,
-                                child: Scaffold(
-                                  body: Map(controller: controller),
-                                  floatingActionButton: FloatingActionButton(
-                                    onPressed: _incrementCounter,
-                                    tooltip: 'Location',
-                                    child: Icon(Icons.location_searching),
-                                  ),
-                                ),
-                              ));
-                        },
-                      );
-                    }),
-              ],
-            )
+    final reportCard = new GestureDetector(
+      child: Container(
+        margin: const EdgeInsets.only(left: 60.0, right: 16.0),
+        decoration: new BoxDecoration(
+          color: Colors.teal,
+          shape: BoxShape.rectangle,
+          borderRadius: new BorderRadius.circular(6.0),
+          boxShadow: <BoxShadow>[
+            new BoxShadow(
+                color: Colors.black,
+                blurRadius: 10.0,
+                offset: new Offset(10.0, 10.0))
           ],
         ),
+        child: new Container(
+          margin: const EdgeInsets.only(
+              top: 8.0, left: 68.0, right: 4.0, bottom: 8.0),
+          constraints: new BoxConstraints.expand(),
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        width: devicewidth * 0.5,
+                        child:
+                            LookupCoordinate(report.latitude, report.longitude),
+                      )
+                    ],
+                  ),
+                  /*new Spacer(),
+                  Column(
+                   children: <Widget>[
+                   Container(
+                   margin: EdgeInsets.only(bottom: 20),
+                    child: new Icon(Icons.clear,
+                   size: 20.0, color: Colors.white70),
+                           ),
+                          ],
+                     ),*/
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: devicewidth * 0.55,
+                    //   height: deviceheight * 0.055,
+                    child: Text(
+                      'Type : ' + report.type,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: devicewidth * 0.55,
+                    //   height: deviceheight * 0.055,
+                    child: Text(
+                      report.description,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              new Spacer(),
+              new Container(
+                  color: const Color(0xFF00C6FF),
+                  width: 36.0,
+                  height: 1.0,
+                  margin: const EdgeInsets.symmetric(vertical: 1.0)),
+              new Row(
+                children: <Widget>[
+                  new Icon(Icons.access_time,
+                      size: 14.0, color: Colors.white70),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: new Text(
+                      publishTime(report.time),
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                  ),
+                  new Spacer(),
+                  GestureDetector(
+                      child: Icon(Icons.location_on,
+                          size: 25.0, color: Colors.red[300]),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                                elevation: 16,
+                                child: Container(
+                                  height: deviceheight,
+                                  width: devicewidth,
+                                  child: Scaffold(
+                                    body: Map(controller: controller),
+                                    floatingActionButton: FloatingActionButton(
+                                      onPressed: _incrementCounter,
+                                      tooltip: 'Location',
+                                      child: Icon(Icons.location_searching),
+                                    ),
+                                  ),
+                                ));
+                          },
+                        );
+                      }),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+                elevation: 16,
+                child: Container(
+                  height: deviceheight * 0.5,
+                  width: devicewidth * 0.6,
+                  decoration: new BoxDecoration(
+                    color: Color(0xBBDD3F1A),
+                    shape: BoxShape.rectangle,
+                    borderRadius: new BorderRadius.circular(6.0),
+                    boxShadow: <BoxShadow>[
+                      new BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 5.0,
+                          offset: new Offset(10.0, 15.0))
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            decoration: new BoxDecoration(
+                              color: Color(0xBB009688),
+                              shape: BoxShape.rectangle,
+                              borderRadius: new BorderRadius.circular(6.0),
+                            ),
+                            height: deviceheight * 0.1,
+                            width: devicewidth * 0.55,
+                            margin: const EdgeInsets.all(10),
+                            child: Center(
+                                child: LookupCoordinate(
+                                    report.latitude, report.longitude)),
+                          )
+                        ],
+                      ),
+                      //new Spacer(),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                              height: deviceheight * 0.3,
+                              width: devicewidth * 0.55,
+                              margin: const EdgeInsets.all(10),
+                              decoration: new BoxDecoration(
+                                color: Color(0xBB009688),
+                                shape: BoxShape.rectangle,
+                                borderRadius: new BorderRadius.circular(6.0),
+                              ),
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    'Type : ' +
+                                        report.type +
+                                        '\nDistance : ' +
+                                        (report.distance / 1000)
+                                            .round()
+                                            .toString() +
+                                        ' km' +
+                                        '\nDescription : ' +
+                                        report.description,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 10,
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                ),
+                              ))
+                        ],
+                      ),
+                    ],
+                  ),
+                ));
+          },
+        );
+      },
     );
 
     return Container(
