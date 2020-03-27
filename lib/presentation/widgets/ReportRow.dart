@@ -22,7 +22,7 @@ class ReportRow extends StatelessWidget {
     );
     void _incrementCounter() {
       controller.location = LatLng(report.latitude, report.longitude);
-      controller.zoom = 22;
+      //controller.zoom = 22;
     }
 
     final devicewidth = MediaQuery.of(context).size.width;
@@ -76,7 +76,21 @@ class ReportRow extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(left: 60.0, right: 16.0),
         decoration: new BoxDecoration(
-          color: Colors.teal,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0.0, 0.4, 0.9],
+            colors: [
+              /*Color(0xFF650D1B),
+              Color(0xFF650D1B),
+              Color(0xFF650D1B),*/
+              Color(0xFF008FBB),
+              Color(0xFF008FBB),
+              Color(0xFF008FBB),
+              //Color(0xFF00AFE0),
+            ],
+          ),
+          //color: /*Colors.teal*/ Color(0xFFBB86FC),
           shape: BoxShape.rectangle,
           borderRadius: new BorderRadius.circular(6.0),
           boxShadow: <BoxShadow>[
@@ -140,7 +154,9 @@ class ReportRow extends StatelessWidget {
                     width: devicewidth * 0.55,
                     //   height: deviceheight * 0.055,
                     child: Text(
-                      report.description,
+                      (report.description != null)
+                          ? report.description
+                          : 'pas de description',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -210,9 +226,9 @@ class ReportRow extends StatelessWidget {
                   height: deviceheight * 0.5,
                   width: devicewidth * 0.6,
                   decoration: new BoxDecoration(
-                    color: Color(0xBBDD3F1A),
+                    color: Color(0xFF70012b),
                     shape: BoxShape.rectangle,
-                    borderRadius: new BorderRadius.circular(6.0),
+                    borderRadius: new BorderRadius.circular(3.0),
                     boxShadow: <BoxShadow>[
                       new BoxShadow(
                           color: Colors.black,
@@ -227,7 +243,7 @@ class ReportRow extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             decoration: new BoxDecoration(
-                              color: Color(0xBB009688),
+                              color: Color(0xff941242),
                               shape: BoxShape.rectangle,
                               borderRadius: new BorderRadius.circular(6.0),
                             ),
@@ -248,7 +264,7 @@ class ReportRow extends StatelessWidget {
                               width: devicewidth * 0.55,
                               margin: const EdgeInsets.all(10),
                               decoration: new BoxDecoration(
-                                color: Color(0xBB009688),
+                                color: Color(0xff941242),
                                 shape: BoxShape.rectangle,
                                 borderRadius: new BorderRadius.circular(6.0),
                               ),
@@ -263,7 +279,9 @@ class ReportRow extends StatelessWidget {
                                             .toString() +
                                         ' km' +
                                         '\nDescription : ' +
-                                        report.description,
+                                        ((report.description != null)
+                                            ? report.description
+                                            : 'pas de description'),
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 30,

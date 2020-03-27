@@ -68,7 +68,7 @@ class DataSearch extends SearchDelegate<String> {
     search.setItem(this.query);
     // show some result based on the selection
     return Card(
-      color: Colors.grey,
+      color: Color(0xFF242A38),
       shape: RoundedRectangleBorder(),
       child: ShowSearch(search),
     );

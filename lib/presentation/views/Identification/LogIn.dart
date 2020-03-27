@@ -41,23 +41,28 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Stack(
           children: <Widget>[
             ///////////  background///////////
             new Container(
-              decoration: new BoxDecoration(
+              color: Color(0xff2e4057),
+              /*  decoration: new BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [0.0, 0.4, 0.9],
                   colors: [
-                    Colors.teal,
+                    /* Colors.teal,
                     Color.fromRGBO(60, 157, 155, 1),
-                    Color(0xFFFF3F1A),
+                    Color(0xFFFF3F1A),*/
+                    Color(0xfffcae1e),
+                    Color(0xffbe5504),
+                    Color(0xff813f0b),
                   ],
                 ),
-              ),
+              ),*/
             ),
 
             Positioned(
@@ -82,7 +87,7 @@ class _LogInState extends State<LogIn> {
                               style: TextStyle(color: Color(0xFF000000)),
                               controller: mailController,
                               cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.emailAddress,
                               autovalidate: true,
                               validator: (String value) {
                                 if (value.length == 0) {
@@ -159,7 +164,7 @@ class _LogInState extends State<LogIn> {
                                       ),
                                     ),
                                   ),
-                                  color: Colors.red,
+                                  color: Color(0xff048ba8),
                                   disabledColor: Colors.grey,
                                   shape: new RoundedRectangleBorder(
                                       borderRadius:

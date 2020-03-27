@@ -12,25 +12,37 @@ class _HomePageState extends State<Home> {
     super.initState();
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Confirmer?'),
+            content: new Text("Désirez-vous quitter l'application"),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('Non'),
+              ),
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Oui'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: Colors.black,
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: Text(
-      //     "Billkamcha",
-      //     style: TextStyle(
-      //       fontSize: 32.0,
-      //       fontWeight: FontWeight.bold,
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      //   backgroundColor: Colors.teal,
-      // ),
-      body: makeBody(context),
-    ));
+    return new WillPopScope(
+        onWillPop: _onWillPop,
+        child: SafeArea(
+            child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.black,
+          body: makeBody(context),
+        )));
   }
 
   Widget makeBody(BuildContext context) {

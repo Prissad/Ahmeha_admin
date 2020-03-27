@@ -36,12 +36,14 @@ class _SignUpState extends State<SignUp> {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Stack(
           children: <Widget>[
             /////////////  background/////////////
             new Container(
-              decoration: new BoxDecoration(
+              color: Color(0xff2e4057),
+              /*decoration: new BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -52,7 +54,7 @@ class _SignUpState extends State<SignUp> {
                     Color(0xFFFF3F1A),
                   ],
                 ),
-              ),
+              ),*/
             ),
 
             Positioned(
@@ -248,7 +250,7 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                     ),
                                   ),
-                                  color: Colors.red,
+                                  color: Color(0xff048ba8),
                                   disabledColor: Colors.grey,
                                   shape: new RoundedRectangleBorder(
                                       borderRadius:

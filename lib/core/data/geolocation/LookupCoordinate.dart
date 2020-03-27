@@ -93,7 +93,7 @@ class _LookupCoordinateState extends State<LookupCoordinate> {
       overflow: TextOverflow.ellipsis,
       maxLines: 2,
       style: TextStyle(
-        color: Colors.white70,
+        color: Colors.white,
         fontWeight: FontWeight.w800,
         fontSize: 16.0,
       ),
