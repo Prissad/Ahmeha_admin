@@ -52,6 +52,7 @@ flutter:
   - assets/junior2.png
   - assets/ministere.png
   - assets/images/admin_background.jpg
+  - assets/wash.gif
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -224,9 +224,9 @@ class ReportRow extends StatelessWidget {
                 elevation: 16,
                 child: Container(
                   height: deviceheight * 0.5,
-                  width: devicewidth * 0.6,
+                  width: devicewidth * 0.75,
                   decoration: new BoxDecoration(
-                    color: Color(0xFF70012b),
+                    color: /*Color(0xFF70012b)*/ Color(0xFFcf6679),
                     shape: BoxShape.rectangle,
                     borderRadius: new BorderRadius.circular(3.0),
                     boxShadow: <BoxShadow>[
@@ -243,12 +243,12 @@ class ReportRow extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             decoration: new BoxDecoration(
-                              color: Color(0xff941242),
+                              color: /*Color(0xff941242)*/ Color(0xFFcf6679),
                               shape: BoxShape.rectangle,
                               borderRadius: new BorderRadius.circular(6.0),
                             ),
                             height: deviceheight * 0.1,
-                            width: devicewidth * 0.55,
+                            width: devicewidth * 0.65,
                             margin: const EdgeInsets.all(10),
                             child: Center(
                                 child: LookupCoordinate(
@@ -256,15 +256,27 @@ class ReportRow extends StatelessWidget {
                           )
                         ],
                       ),
+                      new Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                              color: const Color(0xFFb00020),
+                              width: devicewidth * 0.75 - 40,
+                              height: 1.0,
+                              margin:
+                                  const EdgeInsets.only(left: 20, right: 20)),
+                        ],
+                      ),
                       //new Spacer(),
                       Row(
                         children: <Widget>[
                           Container(
                               height: deviceheight * 0.3,
-                              width: devicewidth * 0.55,
+                              width: devicewidth * 0.65,
                               margin: const EdgeInsets.all(10),
                               decoration: new BoxDecoration(
-                                color: Color(0xff941242),
+                                color: /*Color(0xff941242)*/ Color(0xFFcf6679),
                                 shape: BoxShape.rectangle,
                                 borderRadius: new BorderRadius.circular(6.0),
                               ),
@@ -274,10 +286,12 @@ class ReportRow extends StatelessWidget {
                                     'Type : ' +
                                         report.type +
                                         '\nDistance : ' +
-                                        (report.distance / 1000)
-                                            .round()
-                                            .toString() +
-                                        ' km' +
+                                        ((report.distance != null)
+                                            ? (report.distance / 1000)
+                                                    .round()
+                                                    .toString() +
+                                                ' km'
+                                            : "la distance n'a pas pu être calculée") +
                                         '\nDescription : ' +
                                         ((report.description != null)
                                             ? report.description

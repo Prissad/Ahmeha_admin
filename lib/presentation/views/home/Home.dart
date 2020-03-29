@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_reader/presentation/views/home/animation.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -35,12 +36,16 @@ class _HomePageState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, //or set color with: Color(0xFF0000FF)
+      statusBarIconBrightness: Brightness.light,
+    ));
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
             child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.blue,
           body: makeBody(context),
         )));
   }

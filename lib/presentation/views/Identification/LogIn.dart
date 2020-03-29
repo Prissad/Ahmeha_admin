@@ -40,7 +40,8 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Stack(
@@ -67,9 +68,9 @@ class _LogInState extends State<LogIn> {
 
             Positioned(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                padding: const EdgeInsets.only(top: 140.0),
+                child: ListView(
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Card(
                       elevation: 4.0,
@@ -254,7 +255,7 @@ class _LogInState extends State<LogIn> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   void _login() async {
