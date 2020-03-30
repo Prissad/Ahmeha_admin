@@ -41,6 +41,7 @@ class _MyAppState extends State {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Container(
             height: double.infinity,

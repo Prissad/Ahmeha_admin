@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:news_reader/presentation/views/Identification/LogIn.dart';
+import 'package:news_reader/presentation/views/detail/ReportPage.dart';
 
 class AnimatedButton extends StatefulWidget {
   @override
@@ -33,9 +36,28 @@ class _AnimatedButtonState extends State<AnimatedButton>
     _controller.forward();
   }
 
-  void _onTapUp(TapUpDetails details) {
+  void _onTapUp(TapUpDetails details) async {
     _controller.reverse();
-    Navigator.pushNamed(context, "/logIn");
+
+    final data = await testConnected();
+    if (data != "") {
+      LogIn.connectedEmail = data;
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => ReportPage()));
+    } else {
+      LogIn.connectedEmail = "";
+      Navigator.pushNamed(context, "/logIn");
+    }
+
+    //Navigator.pushNamed(context, "/logIn");
+  }
+
+  Future<String> testConnected() async {
+    var storage = FlutterSecureStorage();
+    var jwt = await storage.read(key: "connected");
+    if (jwt == null) return (Future.value(""));
+    var mail = await storage.read(key: "mail");
+    return (Future.value(mail));
   }
 
   @override

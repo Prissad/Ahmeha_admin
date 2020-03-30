@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CallApi {
   Dio dio;
-  final String
-      _url = /*'http://10.0.2.2:8000/api';*/ 'http://192.168.1.4:8000/api';
+  final String _url =
+      'http://10.0.2.2:8000/api'; /*'http://192.168.1.4:8000/api';*/
 
   postData(data, apiUrl) async {
     var fullUrl = _url + apiUrl;

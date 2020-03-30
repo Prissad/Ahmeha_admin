@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:news_reader/core/api/api.dart';
 import 'package:news_reader/presentation/views/detail/ReportPage.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -269,6 +270,10 @@ class _LogInState extends State<LogIn> {
     try {
       var res = await CallApi().postData(data, "/login");
       LogIn.connectedEmail = data['email'];
+      var storage = FlutterSecureStorage();
+      //print((res.data)['access_token']);
+      await storage.write(key: "connected", value: (res.data)['access_token']);
+      await storage.write(key: "mail", value: data['email']);
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => ReportPage()));
     } catch (e, stacktrace) {

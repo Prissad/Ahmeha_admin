@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:news_reader/core/api/api.dart';
 import 'package:news_reader/core/model/Report.dart';
@@ -45,6 +46,9 @@ class _ReportPageState extends State<ReportPage> {
     /*try {
       var res = await CallApi().postData([], "/logout");
       print(res);*/
+    var storage = FlutterSecureStorage();
+    storage.delete(key: "connected");
+    storage.delete(key: "mail");
     FocusScope.of(context).unfocus();
     Navigator.of(context).popUntil((route) => route.isFirst);
     /*} catch (e, stacktrace) {
