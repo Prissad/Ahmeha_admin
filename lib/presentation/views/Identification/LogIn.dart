@@ -274,6 +274,7 @@ class _LogInState extends State<LogIn> {
       //print((res.data)['access_token']);
       await storage.write(key: "connected", value: (res.data)['access_token']);
       await storage.write(key: "mail", value: data['email']);
+      Navigator.of(context).popUntil((route) => route.isFirst);
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => ReportPage()));
     } catch (e, stacktrace) {
