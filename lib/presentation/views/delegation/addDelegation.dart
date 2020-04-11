@@ -6,39 +6,52 @@ import 'package:news_reader/core/api/api.dart';
 import 'package:news_reader/presentation/views/detail/ReportPage.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-// import 'package:tutorial_project/Home/homeScreen.dart';
-// import 'package:tutorial_project/SignUp/signUpScreen.dart';
-// import 'package:tutorial_project/api/api.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-class LogIn extends StatefulWidget {
-  static String connectedEmail = "";
-  static String connectedName = "";
-  static int connectedDelegId;
+class AddDelegation extends StatefulWidget {
   @override
-  _LogInState createState() => _LogInState();
+  _AddDelegationState createState() => _AddDelegationState();
 }
 
-class _LogInState extends State<LogIn> {
-  bool _isLoading = false;
+class _AddDelegationState extends State<AddDelegation> {
+  bool _isLoading;
 
-  TextEditingController mailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController gouvController = TextEditingController();
+  TextEditingController delegController = TextEditingController();
   ScaffoldState scaffoldState;
-  String email;
-  String mdp;
-  _showMsg(msg) {
-    //
-    final snackBar = SnackBar(
-      content: Text(msg),
-      action: SnackBarAction(
-        label: 'Fermer',
-        onPressed: () {
-          // Some code to undo the change!
-        },
-      ),
-    );
-    Scaffold.of(context).showSnackBar(snackBar);
+  String deleg;
+  String selectedIndexGouv;
+  List<String> gouvernoratsName;
+
+  @override
+  void initState() {
+    _isLoading = false;
+    gouvernoratsName = [
+      "Ariana",
+      "Béja",
+      "Ben Arous",
+      "Bizerte",
+      "Gabès",
+      "Gafsa",
+      "Jendouba",
+      "Kairouan",
+      "Kasserine",
+      "Kébili",
+      "Kef",
+      "Mahdia",
+      "Manouba",
+      "Médenine",
+      "Monastir",
+      "Nabeul",
+      "Sfax",
+      "Sidi Bouzid",
+      "Siliana",
+      "Sousse",
+      "Tataouine",
+      "Tozeur",
+      "Tunis",
+      "Zaghouan",
+    ];
+    selectedIndexGouv = null;
+    super.initState();
   }
 
   @override
@@ -52,21 +65,6 @@ class _LogInState extends State<LogIn> {
             ///////////  background///////////
             new Container(
               color: Color(0xff2e4057),
-              /*  decoration: new BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.0, 0.4, 0.9],
-                  colors: [
-                    /* Colors.teal,
-                    Color.fromRGBO(60, 157, 155, 1),
-                    Color(0xFFFF3F1A),*/
-                    Color(0xfffcae1e),
-                    Color(0xffbe5504),
-                    Color(0xff813f0b),
-                  ],
-                ),
-              ),*/
             ),
 
             Positioned(
@@ -86,44 +84,31 @@ class _LogInState extends State<LogIn> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            /////////////  Email//////////////
-                            TextFormField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              controller: mailController,
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.emailAddress,
-                              autovalidate: true,
-                              validator: (String value) {
-                                if (value.length == 0) {
-                                  return 'Ce champs est obligatoire';
-                                }
-                                return null;
-                              },
-                              onChanged: (String value) {
-                                setState(() {
-                                  email = value;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Email",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
+                            /////////////  gouvernorat //////////////
+                            DropdownButton<String>(
+                              hint: Text("Gouvernorat"),
+                              isExpanded: true,
+                              value: (selectedIndexGouv != null)
+                                  ? selectedIndexGouv
+                                  : null,
+                              items: gouvernoratsName
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                    value: value, child: Text(value));
+                              }).toList(),
+                              onChanged: (String value) => setState(() {
+                                selectedIndexGouv = value;
+                              }),
                             ),
 
-                            /////////////// password////////////////////
+                            /////////////// delegation ////////////////////
                             TextFormField(
                               style: TextStyle(color: Color(0xFF000000)),
                               cursorColor: Color(0xFF9b9b9b),
-                              controller: passwordController,
+                              controller: delegController,
                               keyboardType: TextInputType.text,
-                              obscureText: true,
+                              obscureText: false,
                               autovalidate: true,
                               validator: (String value) {
                                 if (value.length == 0) {
@@ -133,22 +118,22 @@ class _LogInState extends State<LogIn> {
                               },
                               onChanged: (String value) {
                                 setState(() {
-                                  mdp = value;
+                                  deleg = value;
                                 });
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
-                                  Icons.vpn_key,
+                                  Icons.perm_device_information,
                                   color: Colors.grey,
                                 ),
-                                hintText: "Mot de passe",
+                                hintText: "Délégation",
                                 hintStyle: TextStyle(
                                     color: Color(0xFF9b9b9b),
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal),
                               ),
                             ),
-                            /////////////  LogIn Botton///////////////////
+                            /////////////  Submit Botton///////////////////
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: FlatButton(
@@ -156,9 +141,7 @@ class _LogInState extends State<LogIn> {
                                     padding: EdgeInsets.only(
                                         top: 8, bottom: 8, left: 10, right: 10),
                                     child: Text(
-                                      _isLoading
-                                          ? 'Connexion...'
-                                          : 'Se connecter',
+                                      _isLoading ? 'Envoi...' : 'Envoyer',
                                       textDirection: TextDirection.ltr,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -175,11 +158,12 @@ class _LogInState extends State<LogIn> {
                                           new BorderRadius.circular(20.0)),
                                   onPressed: () {
                                     if (!_isLoading) {
-                                      if (email == null) {
+                                      if (selectedIndexGouv == null) {
                                         Alert(
                                           context: context,
                                           type: AlertType.error,
-                                          title: "L'email est obligatoire",
+                                          title:
+                                              "Le choix du gouvernorat est obligatoire",
                                           desc: "Merci de remplir le champ",
                                           buttons: [
                                             DialogButton(
@@ -196,12 +180,12 @@ class _LogInState extends State<LogIn> {
                                                     ])),
                                           ],
                                         ).show();
-                                      } else if (mdp == null) {
+                                      } else if (deleg == null) {
                                         Alert(
                                           context: context,
                                           type: AlertType.error,
                                           title:
-                                              "Le mot de passe est obligatoire",
+                                              "Le nom de la délégation est obligatoire",
                                           desc: "Merci de remplir le champ",
                                           buttons: [
                                             DialogButton(
@@ -219,7 +203,7 @@ class _LogInState extends State<LogIn> {
                                           ],
                                         ).show();
                                       } else {
-                                        _login();
+                                        ajoutDelegation();
                                       }
                                     }
                                   }),
@@ -228,29 +212,6 @@ class _LogInState extends State<LogIn> {
                         ),
                       ),
                     ),
-
-                    ////////////   new account///////////////
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 20),
-                    //   child: InkWell(
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           new MaterialPageRoute(
-                    //               builder: (context) => SignUp()));
-                    //     },
-                    //     child: Text(
-                    //       'Créer un nouveau compte',
-                    //       textDirection: TextDirection.ltr,
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 15.0,
-                    //         decoration: TextDecoration.none,
-                    //         fontWeight: FontWeight.normal,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -261,33 +222,16 @@ class _LogInState extends State<LogIn> {
     ));
   }
 
-  void _login() async {
+  void ajoutDelegation() async {
     setState(() {
       _isLoading = true;
     });
 
     Map<String, dynamic> data = new Map<String, dynamic>();
-    data = {'email': mailController.text, 'password': passwordController.text};
+    data = {'gouv': selectedIndexGouv, 'name': delegController.text};
 
     try {
-      var res = await CallApi().postData(data, "/login");
-
-      var name = (res.data)['name'];
-      var delegId = (res.data)['deleg_id'];
-      LogIn.connectedEmail = data['email'];
-      LogIn.connectedName = name;
-      if (delegId != null) {
-        LogIn.connectedDelegId = delegId;
-      } else {
-        LogIn.connectedDelegId = -1;
-      }
-
-      var storage = FlutterSecureStorage();
-      //print((res.data)['access_token']);
-      await storage.write(key: "connected", value: (res.data)['access_token']);
-      await storage.write(key: "deleg_id", value: delegId.toString());
-      await storage.write(key: "name", value: name);
-      await storage.write(key: "mail", value: data['email']);
+      var res = await CallApi().postData(data, "/deleg");
       Navigator.of(context).popUntil((route) => route.isFirst);
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => ReportPage()));
@@ -296,7 +240,7 @@ class _LogInState extends State<LogIn> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Email ou mot de passe incorrect",
+        title: "Un problème est survenu lors de l'ajout",
         desc: "Veuillez réessayer !",
         buttons: [
           DialogButton(
@@ -311,18 +255,6 @@ class _LogInState extends State<LogIn> {
         ],
       ).show();
     }
-    // var body = json.decode(res.body);
-    // if(body['success']){
-    //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-    //   localStorage.setString('token', body['token']);
-    //   localStorage.setString('user', json.encode(body['user']));
-    //   Navigator.push(
-    //     context,
-    //     new MaterialPageRoute(
-    //         builder: (context) => Home()));
-    // }else{
-    //   _showMsg(body['message']);
-    // }
 
     setState(() {
       _isLoading = false;

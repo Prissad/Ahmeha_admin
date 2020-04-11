@@ -40,24 +40,40 @@ class _AnimatedButtonState extends State<AnimatedButton>
     _controller.reverse();
 
     final data = await testConnected();
-    if (data != "") {
-      LogIn.connectedEmail = data;
+    if (data != null) {
+      LogIn.connectedEmail = data[0];
+      LogIn.connectedName = data[1];
+      try {
+        LogIn.connectedDelegId = int.parse(data[2]);
+      } catch (e) {
+        LogIn.connectedDelegId = (-1);
+      }
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => ReportPage()));
     } else {
       LogIn.connectedEmail = "";
+      LogIn.connectedName = "";
+      LogIn.connectedDelegId = 0;
       Navigator.pushNamed(context, "/logIn");
     }
 
     //Navigator.pushNamed(context, "/logIn");
   }
 
-  Future<String> testConnected() async {
+  Future<List<String>> testConnected() async {
     var storage = FlutterSecureStorage();
     var jwt = await storage.read(key: "connected");
-    if (jwt == null) return (Future.value(""));
+    if (jwt == null) return (Future.value(null));
     var mail = await storage.read(key: "mail");
-    return (Future.value(mail));
+    var name = await storage.read(key: "name");
+    var delegIdStored = await storage.read(key: "deleg_id");
+    var delegId;
+    if (delegIdStored != null) {
+      delegId = delegIdStored;
+    } else {
+      delegId = "-1";
+    }
+    return (Future.value([mail, name, delegId]));
   }
 
   @override

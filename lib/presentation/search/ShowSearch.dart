@@ -4,6 +4,7 @@ import 'package:news_reader/core/api/api.dart';
 import 'package:news_reader/core/model/Report.dart';
 import 'package:news_reader/presentation/result/results.dart';
 import 'package:news_reader/presentation/search/search.dart';
+import 'package:news_reader/presentation/views/Identification/LogIn.dart';
 import 'package:news_reader/presentation/widgets/ReportRow.dart';
 
 class ShowSearch extends StatefulWidget {
@@ -24,9 +25,11 @@ class _ShowSearchState extends State<ShowSearch> {
   Search search;
   int page;
   var _controller = ScrollController();
+  int delegId;
 
   void initState() {
     super.initState();
+    delegId = LogIn.connectedDelegId;
     results = new List<Report>();
     page = 2;
     getResults(1);
@@ -43,10 +46,16 @@ class _ShowSearchState extends State<ShowSearch> {
   getResults(page) async {
     //requests to get the results
     //try {
-    Response res = await CallApi()
-        .getData(page, "/search?search=" + this.search.itemtoSearch);
-    final Map<String, dynamic> parsed = res.data;
+    Response res;
+    if (delegId < 0) {
+      res = await CallApi()
+          .getData(page, "/search?search=" + this.search.itemtoSearch);
+    } else {
+      res = await CallApi().getDataDeleg(
+          delegId, page, "/searchdeleg?search=" + this.search.itemtoSearch);
+    }
 
+    final Map<String, dynamic> parsed = res.data;
     setState(() {
       results += parsed['posts']['data']
           .map<Report>((k) => Report.fromJson(k))

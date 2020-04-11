@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_reader/presentation/views/Inscription/SignUp.dart';
+import 'package:news_reader/presentation/views/delegation/addDelegation.dart';
 import 'presentation/views/Identification/LogIn.dart';
 import 'presentation/views/detail/ReportPage.dart';
 import 'presentation/views/home/Home.dart';
@@ -15,6 +16,7 @@ void main() {
         '/Reports': (context) => ReportPage(),
         '/signUp': (context) => SignUp(),
         '/logIn': (context) => LogIn(),
+        '/deleg': (context) => AddDelegation(),
       },
       //initialRoute: '/',
     ),
@@ -31,7 +33,7 @@ class _MyAppState extends State {
   void initState() {
     super.initState();
     new Future.delayed(
-        const Duration(seconds: 4),
+        const Duration(seconds: 2),
         () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => Home()),

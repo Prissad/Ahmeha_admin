@@ -23,10 +23,12 @@ class _ReportPageState extends State<ReportPage> {
   int page;
   bool value = false;
   var _controller = ScrollController();
+  int delegId;
 
   @override
   void initState() {
     super.initState();
+    delegId = LogIn.connectedDelegId;
     page = 2;
     reports = new List<Report>();
     reportsTrue = new List<Report>();
@@ -49,6 +51,8 @@ class _ReportPageState extends State<ReportPage> {
     var storage = FlutterSecureStorage();
     storage.delete(key: "connected");
     storage.delete(key: "mail");
+    storage.delete(key: "name");
+    storage.delete(key: "deleg_id");
     FocusScope.of(context).unfocus();
     Navigator.of(context).popUntil((route) => route.isFirst);
     /*} catch (e, stacktrace) {
@@ -58,7 +62,13 @@ class _ReportPageState extends State<ReportPage> {
 
   void addReports(page) async {
     // try {
-    Response res = await CallApi().getData(page, "/posts");
+    Response res;
+    if (delegId < 0) {
+      res = await CallApi().getData(page, "/posts");
+    } else {
+      res = await CallApi().getDataDeleg(delegId, page, "/postdeleg");
+    }
+
     final Map<String, dynamic> parsed = res.data;
 
     reports =
@@ -105,8 +115,12 @@ class _ReportPageState extends State<ReportPage> {
                     BoxDecoration(color: Colors.grey.withOpacity(0.5)))),
         ListView(padding: EdgeInsets.zero, children: <Widget>[
           new UserAccountsDrawerHeader(
-            accountName: new Text("Bonjour"),
-            accountEmail: new Text(LogIn.connectedEmail),
+            accountName: (LogIn.connectedName != null)
+                ? Text(LogIn.connectedName)
+                : Text(""),
+            accountEmail: (LogIn.connectedEmail != null)
+                ? Text(LogIn.connectedEmail)
+                : Text(""),
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 image:
@@ -135,18 +149,34 @@ class _ReportPageState extends State<ReportPage> {
               onTap: () {
                 _logout();
               }),
-          new ListTile(
-              leading: Icon(
-                Icons.group_add,
-                size: 40,
-              ),
-              title: new Text(
-                "Ajouter un administrateur",
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, "/signUp");
-              }),
+          (delegId < 0)
+              ? new ListTile(
+                  leading: Icon(
+                    Icons.group_add,
+                    size: 40,
+                  ),
+                  title: new Text(
+                    "Ajouter un administrateur",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/signUp");
+                  })
+              : Container(),
+          (delegId < 0)
+              ? new ListTile(
+                  leading: Icon(
+                    Icons.playlist_add,
+                    size: 40,
+                  ),
+                  title: new Text(
+                    "Ajouter une délégation",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/deleg");
+                  })
+              : Container(),
           new ListTile(
               leading: Icon(
                 Icons.directions_run,

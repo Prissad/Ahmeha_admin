@@ -21,6 +21,20 @@ class CallApi {
         .get(Uri.encodeFull(fullUrl), queryParameters: {"page": page});
   }
 
+  getDataDeleg(id, page, apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    dio = new Dio();
+    return await dio.get(Uri.encodeFull(fullUrl),
+        queryParameters: {"id": id, "page": page});
+  }
+
+  getDelegations(gouv, apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    dio = new Dio();
+    return await dio
+        .get(Uri.encodeFull(fullUrl), queryParameters: {"gouv": gouv});
+  }
+
   getDataAll(apiUrl) async {
     var fullUrl = _url + apiUrl;
     dio = new Dio();
