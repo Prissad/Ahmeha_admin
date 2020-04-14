@@ -33,7 +33,7 @@ class Report {
         json['longitude'] as double,
         json['latitude'] as double,
         json['type'] as String,
-        (/*'http://51.178.54.128:2020/' +*/ (json['urlToImage'] as String)),
+        ('http://51.178.54.128:2020/' + (json['urlToImage'] as String)),
         json['time'] as String,
         json['description'] as String,
         affichage);
