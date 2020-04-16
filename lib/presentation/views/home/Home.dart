@@ -62,6 +62,8 @@ class _HomePageState extends State<Home> {
     final deviceHeight = MediaQuery.of(context).size.height;
 
     return Container(
+        height: deviceHeight,
+        width: deviceWidth,
         decoration: new BoxDecoration(
           image: backgroundImage,
         ),
@@ -71,14 +73,14 @@ class _HomePageState extends State<Home> {
               Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    SizedBox(height: 150),
+                    SizedBox(height: deviceHeight * 0.2),
                     Container(
                       child: new Text(
-                        "Billkamcha",
+                        "أحميها",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 40.0,
+                            fontSize: 50.0,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -87,7 +89,7 @@ class _HomePageState extends State<Home> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 40.0,
+                          fontSize: 25.0,
                           fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: deviceHeight * 0.1),
@@ -125,56 +127,5 @@ class _HomePageState extends State<Home> {
                 ),
               ),
             ]));
-
-    // return Stack(
-    //   children: <Widget>[
-    //     Container(
-
-    //       decoration: new BoxDecoration(
-    //         image: backgroundImage,
-    //       ),
-    //       child:
-    //           Column(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //               children: <Widget>[
-    //      Center(
-    //             child: AnimatedButton()
-    //             ),
-    //               ],
-    //     Positioned(
-    //       top: deviceHeight * 0.6,
-    //       child: Container(
-    //         width: deviceWidth,
-    //         color: Color.fromRGBO(255, 255, 255, 0.8),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //           children: <Widget>[
-    //             new Image.asset(
-    //               "assets/ministere.png",
-    //               width: deviceWidth * 0.15,
-    //               height: deviceHeight * 0.15,
-    //             ),
-    //             new Image.asset(
-    //               "assets/junior2.png",
-    //               width: deviceWidth * 0.15,
-    //               height: deviceHeight * 0.15,
-    //             ),
-    //             new Image.asset(
-    //               "assets/logo.png",
-    //               width: deviceWidth * 0.15,
-    //               height: deviceHeight * 0.15,
-    //             ),
-    //             new Image.asset(
-    //               "assets/obs.png",
-    //               width: deviceWidth * 0.15,
-    //               height: deviceHeight * 0.15,
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-
-    //   ],
-    // );
   }
 }

@@ -9,7 +9,7 @@ void main() {
   runApp(
     MaterialApp(
       home: new MyApp(),
-      title: 'Flutter Demo',
+      title: 'أحميها Admin',
       debugShowCheckedModeBanner: false,
       routes: {
         //'/': (context) => Home(),

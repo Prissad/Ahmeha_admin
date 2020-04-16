@@ -18,7 +18,7 @@ dependencies:
   dio: ^3.0.9
   rxdart: ^0.22.3  
   flutter_staggered_animations: "^0.1.2"
-  geolocator: ^5.3.0
+  geolocator: ^5.3.1
   map: ^0.1.0+1
   shared_preferences: ^0.5.6+3
   flappy_search_bar: ^1.7.2
